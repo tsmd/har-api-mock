@@ -6,8 +6,5 @@
   "keywords": [],
   "author": "Takayuki Shimada",
   "license": "MIT",
-  "dependencies": {
-    "express": "^4.17.1",
-    "minimist": "^1.2.0"
-  }
+  "dependencies": {}
 }
