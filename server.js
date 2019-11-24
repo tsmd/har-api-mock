@@ -9,7 +9,7 @@ const harData = JSON.parse(fs.readFileSync(harFile, { encoding: 'utf8' }))
 const port = args.port || 3210
 const hostname = args.hostname || 'localhost'
 
-const ignoreHeaders = ['content-length', 'date', 'status']
+const ignoreHeaders = ['content-encoding', 'content-length', 'date', 'status', 'vary']
 
 function findEntry(req, entries) {
   const reqMethod = req.method.toLowerCase()
@@ -57,7 +57,12 @@ server.all('*', (req, res) => {
   }, {})
   res.status(foundEntry.response.status)
   res.set(headers)
-  res.send(foundEntry.response.content.text)
+
+  if (foundEntry.response.content.encoding === 'base64') {
+    res.send(Buffer.from(foundEntry.response.content.text, 'base64'))
+  } else {
+    res.send(foundEntry.response.content.text)
+  }
 })
 
 server.set('x-powered-by', false)
