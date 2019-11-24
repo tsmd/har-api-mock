@@ -2,7 +2,7 @@
   "name": "har-api-mock",
   "version": "0.0.0",
   "private": true,
-  "main": "server.js",
+  "main": "middleware.js",
   "keywords": [],
   "author": "Takayuki Shimada",
   "license": "MIT",
