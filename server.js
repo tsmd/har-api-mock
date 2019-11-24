@@ -9,6 +9,8 @@ const harData = JSON.parse(fs.readFileSync(harFile, { encoding: 'utf8' }))
 const port = args.port || 3210
 const hostname = args.hostname || 'localhost'
 
+const ignoreHeaders = ['content-length', 'date', 'status']
+
 function findEntry(req, entries) {
   const reqMethod = req.method.toLowerCase()
   const reqUrl = new URL(req.originalUrl, 'http://localhost')
@@ -48,7 +50,9 @@ server.all('*', (req, res) => {
   }
 
   const headers = foundEntry.response.headers.reduce((prev, curr) => {
-    prev[curr.name] = curr.value
+    if (!ignoreHeaders.includes(curr.name.toLowerCase())) {
+      prev[curr.name] = curr.value
+    }
     return prev
   }, {})
   res.status(foundEntry.response.status)
